@@ -1,5 +1,5 @@
-WWW-Scraper-ISBN-Siciliano_Driver version 0.01
-==============================================
+WWW-Scraper-ISBN-Siciliano_Driver
+=================================
 
 This distribution contains two Perl extensions for the ISBN search collection 
 that is provided by WWW::Scraper::ISBN.

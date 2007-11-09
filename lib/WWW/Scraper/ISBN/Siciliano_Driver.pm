@@ -3,7 +3,7 @@ package WWW::Scraper::ISBN::Siciliano_Driver;
 use strict;
 use warnings;
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 use base qw( WWW::Scraper::ISBN::Driver );
 
@@ -35,11 +35,17 @@ sub search {
     $book->{description} = ''; #return blank
     
     my $ua = LWP::UserAgent->new();
-    my $search = $isbn =~ m/^85/io ? SEARCHBR : SEARCH;
+    my $search;
+    if (length($isbn) == 13) {
+       $search = $isbn =~ m/^97/ ? SEARCHBR : SEARCH;
+    }
+    else {
+       $search = $isbn =~ m/^85/ ? SEARCHBR : SEARCH;
+    }
     my $res = $ua->request(GET $search . $isbn);
     my $doc_html = $res->as_string;
     
-    if($doc_html =~ m{<td class="p5"><a href='((?:livro|importado).asp\?orn=...&Tipo=2&ID=.*?)'><strong>(.+?)</strong>}igo) {
+    if($doc_html =~ m{<td class="p5"><a href='((?:livro|importado).asp\?[^>]*orn=...&Tipo=2&ID=.*?)'><strong>(.+?)</strong>}igo) {
         $book->{book_link} = 'http://www.siciliano.com.br/' . $1;
         $book->{title} = $2;
         $book->{isbn} = $isbn;

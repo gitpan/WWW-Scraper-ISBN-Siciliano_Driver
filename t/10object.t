@@ -8,22 +8,18 @@ use Test::More tests => 9;
     my $scraper = WWW::Scraper::ISBN->new();
     isa_ok($scraper, 'WWW::Scraper::ISBN');
     $scraper->drivers('Siciliano');
-    my $isbn = '8532609880';
+    my $isbn = '9780994317391';
     my $result = $scraper->search($isbn);
     
-    SKIP: {
-        skip($result->error . "\n",8) unless $result->found;
-        
-        is($result->found,1);
-        is($result->found_in,'Siciliano');
-        
-        my $book = $result->book;
-        like($book->{'title'},qr/DESEJO AO DESEJO/);
-        is($book->{'author'},     'Leda M. C. Barone');
-        is($book->{'book_link'},  'http://www.siciliano.com.br/livro.asp?orn=LSE&Tipo=2&ID=180');
-        is($book->{'image_link'}, 'http://www.siciliano.com.br/capas/8532609880.gif');
-        is($book->{'pubdate'},    '1993');
-        is($book->{'publisher'},  'VOZES');
-    }
+    is($result->found,1 , "search isbn $isbn");
+    is($result->found_in , 'Siciliano');
+    
+    my $book = $result->book;
+    like($book->{'title'},  qr/DICIONARIO OXFORD ESCOLAR \(COM CD\)/);
+    is($book->{'author'},     'EDITORA OXFORD');
+    is($book->{'book_link'},  'http://www.siciliano.com.br/livro.asp?tema=2&orn=LSE&Tipo=2&ID=691958');
+    is($book->{'image_link'}, 'http://www.siciliano.com.br/capas/9780994317391.jpg');
+    is($book->{'pubdate'},    '2007');
+    is($book->{'publisher'},  'OXFORD UNIVERSITY PRESS');
     
 ###########################################################
